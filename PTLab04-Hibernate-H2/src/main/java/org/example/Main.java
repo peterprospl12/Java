@@ -54,6 +54,7 @@ public class Main {
                                 deleteMage(em, command);
                             } catch (NoResultException e) {
                                 System.out.println("Incorrect mage name");
+                                em.getTransaction().rollback();
                             }
                         }
                         case "TOWER" -> {
@@ -63,6 +64,7 @@ public class Main {
                                 deleteTower(em, command);
                             } catch (NoResultException e) {
                                 System.out.println("Incorrect tower name");
+                                em.getTransaction().rollback();
                             }
                         }
                     }
@@ -143,6 +145,7 @@ public class Main {
             } else {
                 System.out.println("An error occurred while committing the transaction: " + e.getMessage());
             }
+            tx.rollback();
         }
     }
 
@@ -161,6 +164,7 @@ public class Main {
             tower = (Tower) em.createNamedQuery("findTowerByName").setParameter("name", tower_name).getSingleResult();
         } catch (NoResultException e) {
             System.out.println("Incorrect tower name");
+            tx.rollback();
             return;
         }
 
@@ -173,6 +177,7 @@ public class Main {
             } else {
                 System.out.println("An error occurred while committing the transaction: " + e.getMessage());
             }
+            tx.rollback();
         }
 
     }
